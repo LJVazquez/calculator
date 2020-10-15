@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Calculabra</title>
+</head>
+<body>
+    <div class="container text-right bg-light" id="calc-body" >
+        <div class="row bg-info mb-4" id="display">
+            <div class="col-12" id="display-previous">0</div>
+            <div class="col-12" id="display-current">0</div>
+        </div>
+
+<!------------------------------- buttons -------------------------->
+
+        <div class="row">
+            <div class="col-6 calc-btn text-center" data-op="ac"> <key> AC </key> </div>
+            <div class="col-3 calc-btn" data-op="change-sign"> <key> +/- </key> </div>
+            <div class="col-3 calc-btn" data-op="divide"> <key> / </key> </div>
+        </div>
+
+        <div class="row">
+            <div class="col-3 calc-btn" data-num="7"> <key> 7 </key> </div>
+            <div class="col-3 calc-btn" data-num="8"> <key> 8 </key> </div>
+            <div class="col-3 calc-btn" data-num="9"> <key> 9 </key> </div>
+            <div class="col-3 calc-btn" data-op="multiply"> <key> * </key> </div>
+        </div>
+
+        <div class="row">
+            <div class="col-3 calc-btn" data-num="4"> <key> 4 </key> </div>
+            <div class="col-3 calc-btn" data-num="5"> <key> 5 </key> </div>
+            <div class="col-3 calc-btn" data-num="6"> <key> 6 </key> </div>
+            <div class="col-3 calc-btn" data-op="substract"> <key> - </key> </div>
+        </div>
+
+        <div class="row">
+            <div class="col-3 calc-btn" data-num="1"> <key> 1 </key> </div>
+            <div class="col-3 calc-btn" data-num="2"> <key> 2 </key> </div>
+            <div class="col-3 calc-btn" data-num="3"> <key> 3 </key> </div>
+            <div class="col-3 calc-btn" data-op="add"> <key> + </key> </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 calc-btn text-center" data-num="0"> <key> 0 </key> </div>
+            <div class="col-3 calc-btn" data-num="decimal"> <key> . </key> </div>
+            <div class="col-3 calc-btn" data-op="result"> <key> = </key> </div>
+        </div>
+
+    </div>
+
+<!------------------------------- buttons -------------------------->
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <script src="app.js"></script>
+</body>
+</html>  
