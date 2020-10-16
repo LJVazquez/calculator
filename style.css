@@ -13,6 +13,10 @@
     overflow-y: hidden;
 }
 
+#display-previous{
+    font-size: 0.8em;
+}
+
 .calc-btn{
     height: 3em;
     border: 1px solid white;

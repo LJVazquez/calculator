@@ -1,18 +1,18 @@
 // basic functions
 function add(a, b){
-    return a + b;
+    return +a + +b;
 }
 
 function substract(a, b){
-    return a - b;
+    return +a - +b;
 }
 
 function multiply(a, b){
-    return a * b;
+    return +a * +b;
 }
 
 function divide(a, b){
-    return a / b;
+    return +a / +b;
 }
 
 function operate(numA, operand, numB){
@@ -70,7 +70,7 @@ function setOperand(){
 function secondNumber(){
     resultBtn.addEventListener('click', () =>{
         secondValue = displayCurrent.innerText;
-        displayPrevious.innerText += secondValue;
+        displayPrevious.innerText += secondValue + ' =';
         result = operate(firstValue, operand, secondValue);
         displayCurrent.innerText = result;
         console.log(secondValue)
