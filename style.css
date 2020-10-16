@@ -7,8 +7,10 @@
     font-size: 1.5em;
 }
 
-#display-current{
+#display-current, #display-previous{
+    height: 1.5em;
     font-size: 2em;
+    overflow-y: hidden;
 }
 
 .calc-btn{

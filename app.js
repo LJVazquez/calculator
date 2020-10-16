@@ -15,37 +15,70 @@ function divide(a, b){
     return a / b;
 }
 
-function operate(numA, operator, numB){
-    if(operator === '+'){
+function operate(numA, operand, numB){
+    if(operand === '+'){
         return add(numA, numB);
     }
-    if(operator === '-'){
+    if(operand === '-'){
         return substract(numA, numB);
     }
-    if(operator === '*'){
+    if(operand === '*'){
         return multiply(numA, numB);
     }
-    if(operator === '/'){
+    if(operand === '/'){
         return divide(numA, numB);
     }
 }
 
 const numbers = document.querySelectorAll('[data-num]');
+const operations = document.querySelectorAll('[data-op]')
 const displayPrevious = document.getElementById('display-previous');
 const displayCurrent = document.getElementById('display-current');
+const resultBtn = document.querySelector('[data-result]');
+
+let firstValue = '';
+let secondValue = '';
+let operand = '';
+let result = '';
 
 
-function updateValue(){
-    let currentValue = '';
-
+function firstNumber(){
     numbers.forEach((element) => {
 
         element.addEventListener('click',() =>{
-
-            currentValue += element.dataset.num;
-            displayCurrent.innerText = currentValue;
+            displayCurrent.innerText += element.dataset.num
+            console.log(firstValue)
         })
     })
 }
 
-updateValue()
+
+function setOperand(){
+    operations.forEach((element) => {
+
+        element.addEventListener('click',() => {
+            firstValue = displayCurrent.innerText;
+            console.log(firstValue)
+            operand = element.dataset.op;
+            displayPrevious.innerText = displayCurrent.innerText + operand;
+            displayCurrent.innerText = '';
+            console.log(operand);
+        })
+    })
+}
+
+function secondNumber(){
+    resultBtn.addEventListener('click', () =>{
+        secondValue = displayCurrent.innerText;
+        displayPrevious.innerText += secondValue;
+        result = operate(firstValue, operand, secondValue);
+        displayCurrent.innerText = result;
+        console.log(secondValue)
+    })
+}
+
+
+
+firstNumber();
+setOperand();
+secondNumber();

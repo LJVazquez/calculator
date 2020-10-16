@@ -8,45 +8,46 @@
     <title>Calculabra</title>
 </head>
 <body>
+    <h1 class="display-4 text-center my-3">Calculabra</h1>
     <div class="container text-right bg-light" id="calc-body" >
         <div class="row bg-info mb-4" id="display">
-            <div class="col-12" id="display-previous">0</div>
-            <div class="col-12" id="display-current">0</div>
+            <div class="col-12" id="display-previous"></div>
+            <div class="col-12" id="display-current"></div>
         </div>
 
 <!------------------------------- buttons -------------------------->
 
         <div class="row">
-            <div class="col-6 calc-btn text-center" data-op="ac"> <key> AC </key> </div>
-            <div class="col-3 calc-btn" data-op="change-sign"> <key> +/- </key> </div>
-            <div class="col-3 calc-btn" data-op="divide"> <key> / </key> </div>
+            <div class="col-6 calc-btn text-center" id="ac"> <key> AC </key> </div>
+            <div class="col-3 calc-btn"> <key> +/- </key> </div>
+            <div class="col-3 calc-btn" data-op="/"> <key> / </key> </div>
         </div>
 
         <div class="row">
             <div class="col-3 calc-btn" data-num="7"> <key> 7 </key> </div>
             <div class="col-3 calc-btn" data-num="8"> <key> 8 </key> </div>
             <div class="col-3 calc-btn" data-num="9"> <key> 9 </key> </div>
-            <div class="col-3 calc-btn" data-op="multiply"> <key> * </key> </div>
+            <div class="col-3 calc-btn" data-op="*"> <key> * </key> </div>
         </div>
 
         <div class="row">
             <div class="col-3 calc-btn" data-num="4"> <key> 4 </key> </div>
             <div class="col-3 calc-btn" data-num="5"> <key> 5 </key> </div>
             <div class="col-3 calc-btn" data-num="6"> <key> 6 </key> </div>
-            <div class="col-3 calc-btn" data-op="substract"> <key> - </key> </div>
+            <div class="col-3 calc-btn" data-op="-"> <key> - </key> </div>
         </div>
 
         <div class="row">
             <div class="col-3 calc-btn" data-num="1"> <key> 1 </key> </div>
             <div class="col-3 calc-btn" data-num="2"> <key> 2 </key> </div>
             <div class="col-3 calc-btn" data-num="3"> <key> 3 </key> </div>
-            <div class="col-3 calc-btn" data-op="add"> <key> + </key> </div>
+            <div class="col-3 calc-btn" data-op="+"> <key> + </key> </div>
         </div>
 
         <div class="row">
             <div class="col-6 calc-btn text-center" data-num="0"> <key> 0 </key> </div>
-            <div class="col-3 calc-btn" data-num="decimal"> <key> . </key> </div>
-            <div class="col-3 calc-btn" data-op="result"> <key> = </key> </div>
+            <div class="col-3 calc-btn" data-num="."> <key> . </key> </div>
+            <div class="col-3 calc-btn" data-result> <key> = </key> </div>
         </div>
 
     </div>
