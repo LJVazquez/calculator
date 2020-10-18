@@ -8,25 +8,25 @@ function substract(a, b){
 }
 
 function multiply(a, b){
-    return +a * +b;
+    return +a * 1000 * +b * 1000 / 1000000; // POR LOS PROBLEMAS DE JS CON FLOATS
 }
 
 function divide(a, b){
-    return +a / +b;
+    return +a * 1000 / +b * 1000 / 1000000; // POR LOS PROBLEMAS DE JS CON FLOATS
 }
 
 function operate(numA, operand, numB){
     if(operand === '+'){
-        return add(numA, numB);
+        result = add(numA, numB);
     }
     if(operand === '-'){
-        return substract(numA, numB);
+        result = substract(numA, numB);
     }
     if(operand === '*'){
-        return multiply(numA, numB);
+        result = multiply(numA, numB);
     }
     if(operand === '/'){
-        return divide(numA, numB);
+        result = divide(numA, numB);
     }
 }
 
@@ -40,137 +40,167 @@ const delBtn = document.getElementById('del');
 const dotBtn = document.getElementById('dot');
 const signBtn = document.getElementById('sign');
 
-let firstValue = '';
-let secondValue = '';
-let operand = '';
+let isOperand = false;
+
+let firstValue = [];
+let secondValue = [];
+let operandValue = '';
 let result = '';
 
-// suma el nro del data.num al displayCurrent;
-function firstNumber(){
 
-    numbers.forEach((element) => {
-
-        element.addEventListener('click',() =>{
-            
-            if (firstValue !== '' && secondValue !== '' && result !== ''){
-                displayCurrent.innerText = '';
-            }
-
-            displayCurrent.innerText += element.dataset.num
-        })
-    })
+function updatePreviousDisplay(){
+    displayPrevious.innerText = 
+    `${firstValue.join('')} ${operandValue} ${secondValue.join('')}`;
+    displayCurrent.innerText = result;
 }
 
-// guarda el valor de displayCurrent en firstValue, setea el valor de data.op en
-// operand.
-// le da el valor de displayCurrent mas el operando a display previous y setea 
-// displayCurrent a '';
-function setOperand(){
-    operations.forEach((element) => {
+numbers.forEach((element) => {
 
-        element.addEventListener('click',() => {
+    element.addEventListener('click',() =>{
 
-            if (firstValue !== '' && secondValue !== '' && result !== ''){
-                displayCurrent.innerText = '';
-            }
+        if (isOperand === false  && result === ''){
             
-            if (firstValue === ''){
-                firstValue = displayCurrent.innerText;
-                operand = element.dataset.op;
-                displayPrevious.innerText = `${firstValue} ${operand} ${secondValue}`;
-                displayCurrent.innerText = '';
-            }
+            firstValue.push(element.dataset.num);
+            updatePreviousDisplay();
 
-            else if (result !== ''){ // quiere decir que ya operamos antes
+        } else if (isOperand === true  && result === ''){
+            secondValue.push(element.dataset.num);
+            updatePreviousDisplay();
 
-                firstValue = result;
-                secondValue = displayCurrent.innerText;
-                operand = element.dataset.op;
-                result = operate(firstValue, operand, secondValue);
-                displayPrevious.innerText = `${firstValue} ${operand} ${secondValue}`;
-                displayCurrent.innerText = result;
-
-                
-            } else{
-                secondValue = displayCurrent.innerText;
-                displayPrevious.innerText = `${firstValue} ${operand} ${secondValue}`;
-                operand = element.dataset.op;
-                result = operate(firstValue, operand, secondValue);
-                displayCurrent.innerText = result;
-            }
-
-
-            console.log(`primer valor: ${firstValue}`)
-            console.log(`operando: ${operand}`)
-            console.log(`segundo valor: ${secondValue}`)
-            console.log(`resultado: ${result}`)
-
-        })
+        }
     })
-}
+})
 
+operations.forEach((element) =>{
 
-// al presionar = guarda el valor de displayCurrent.innerText en secondValue
-// ejecuta operate con los valores guardados hasta el momento y los guarda en 
-// result. Muestra el resultado en displayCurrent;
-function getResult(){
+    element.addEventListener('click', () => {
 
-    resultBtn.addEventListener('click', () =>{
-        
-        if (firstValue === ''){
+        if (secondValue.length === 0 && isOperand === true){
 
-            firstValue = displayCurrent.innerText;
-            displayPrevious.innerText = `${firstValue} ${operand} ${secondValue}`;
-            displayCurrent.innerText = '0';
+            operandValue = element.dataset.op;
+            updatePreviousDisplay();
 
-        } else if (firstValue == '0' && displayCurrent.innerText == '0'){
+        } else if (isOperand === true){
 
             return;
-
-        } else {
-        
-            secondValue = displayCurrent.innerText;
-            displayPrevious.innerText = displayPrevious.innerText = `${firstValue} ${operand} ${secondValue}`;
-            result = operate(firstValue, operand, secondValue);
-            displayCurrent.innerText = result;
         }
 
-        console.log(`primer valor: ${firstValue}`)
-        console.log(`operando: ${operand}`)
-        console.log(`segundo valor: ${secondValue}`)
-        console.log(`resultado: ${result}`)
-        
+        isOperand = true;
+        operandValue = element.dataset.op;
+        updatePreviousDisplay();
+
     })
-}
+})
 
-// setea todos los valores a '';
+// borra todos los valores almacenados en variables
 acBtn.addEventListener('click', () =>{
-    displayCurrent.innerText = '';
-    displayPrevious.innerText = '';
-    firstValue = '';
-    secondValue = '';
-    result = '';
+    firstValue = [];
+    secondValue = []; 
+    operandValue = ''; 
+    result = ''; 
+    isOperand = false; 
+    updatePreviousDisplay();
 })
 
-// usa slice para eliminar el ultimo caracter de la string en displayCurrent
+
 delBtn.addEventListener('click', ()=>{
-    displayCurrent.innerText = displayCurrent.innerText.slice(0, -1);
+
+    if (result !== ''){
+        return;
+    }
+
+    if (secondValue.length === 0 && isOperand === true){
+
+        isOperand = false;
+        operandValue = '';
+        updatePreviousDisplay();
+    
+    } else if (secondValue.length === 0){
+
+        firstValue.pop();
+        updatePreviousDisplay()
+
+    } else {
+
+        secondValue.pop();
+        updatePreviousDisplay()
+    }
 })
+
+
+resultBtn.addEventListener('click', () => {
+
+    if (result !== ''){
+
+        firstValue = String(result).split();
+        operate(firstValue, operandValue, secondValue.join(''));
+        updatePreviousDisplay();
+
+
+    }
+
+
+    operate(firstValue.join(''), operandValue, secondValue.join(''));
+    updatePreviousDisplay();
+    isOperand = false;
+
+})
+
 
 // checkea en cada caracter de la string de displayCurrent por '.'
 // si lo encuentra retorna, de no encontrarlo lo agrega a displayCurrent.innerText;
 dotBtn.addEventListener('click', () =>{
-    for (let i = 0; i < displayCurrent.innerText.length; i++){
-        if (displayCurrent.innerText[i] === '.'){
-            return;
-        } 
-    } displayCurrent.innerText += '.';
+
+    if (result !== ''){
+        return;
+    }
+
+    else if (isOperand === false){
+        for (let i = 0; i < firstValue.length; i++){
+
+            if (firstValue[i] === '.'){
+    
+                return;
+            } 
+    
+        } firstValue.push('.');
+    }
+    
+    else {
+        for (let i = 0; i < secondValue.length; i++){
+
+            if (secondValue[i] === '.'){
+    
+                return;
+            } 
+    
+        } secondValue.push('.');
+    }
+
+    updatePreviousDisplay();
 })
 
 signBtn.addEventListener('click', () =>{
-    displayCurrent.innerText = displayCurrent.innerText * -1;
-})
 
-firstNumber();
-setOperand();
-getResult();
+    if(result !== ''){
+        return;
+    }
+
+    else if (isOperand === false && firstValue[0] === '-'){
+        firstValue.shift();
+    }
+
+    else if (isOperand === false){
+        firstValue.unshift('-');
+    }
+
+    else if (isOperand === true && secondValue[0] === '-'){
+        secondValue.shift();
+    }
+
+    else{
+        secondValue.unshift('-')
+    }
+
+    updatePreviousDisplay();
+})
