@@ -17,16 +17,16 @@ function divide(a, b){
 
 function operate(numA, operand, numB){
     if(operand === '+'){
-        result = add(numA, numB);
+        result = add(numA, numB).toString();
     }
     if(operand === '-'){
-        result = substract(numA, numB);
+        result = substract(numA, numB).toString();
     }
     if(operand === '*'){
-        result = multiply(numA, numB);
+        result = multiply(numA, numB).toString();
     }
     if(operand === '/'){
-        result = divide(numA, numB);
+        result = divide(numA, numB).toString();
     }
 }
 
@@ -78,13 +78,8 @@ operations.forEach((element) =>{
 
     element.addEventListener('click', () => {
 
-        if (isOperand && secondValue === ''){
-            operandValue = element.dataset.op;
-            updatePreviousDisplay();
-        }
 
-        else if(isOperand){
-
+        if(isOperand && secondValue.length !== 0){
             operate(firstValue.join(''), operandValue, secondValue.join(''));
             firstValue = String(result).split();
             secondValue = [];
@@ -92,14 +87,12 @@ operations.forEach((element) =>{
             updatePreviousDisplay();
         }
 
-
         operandValue = element.dataset.op;
         isOperand = true;
         updatePreviousDisplay();
     })
 })
 
-// borra todos los valores almacenados en variables
 acBtn.addEventListener('click', () =>{
     firstValue = [];
     secondValue = []; 
@@ -111,10 +104,6 @@ acBtn.addEventListener('click', () =>{
 
 
 delBtn.addEventListener('click', ()=>{
-
-    if (result !== ''){
-        return;
-    }
 
     if (secondValue.length === 0 && isOperand === true){
 
@@ -158,11 +147,7 @@ resultBtn.addEventListener('click', () => {
 // si lo encuentra retorna, de no encontrarlo lo agrega a displayCurrent.innerText;
 dotBtn.addEventListener('click', () =>{
 
-    if (result !== ''){
-        return;
-    }
-
-    else if (isOperand === false){
+    if (isOperand === false){
         for (let i = 0; i < firstValue.length; i++){
 
             if (firstValue[i] === '.'){
@@ -189,11 +174,7 @@ dotBtn.addEventListener('click', () =>{
 
 signBtn.addEventListener('click', () =>{
 
-    if(result !== ''){
-        return;
-    }
-
-    else if (isOperand === false && firstValue[0] === '-'){
+    if (isOperand === false && firstValue[0] === '-'){
         firstValue.shift();
     }
 
