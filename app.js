@@ -67,6 +67,9 @@ numbers.forEach((element) => {
             secondValue.push(element.dataset.num);
             updatePreviousDisplay();
 
+        } else {
+            secondValue.push(element.dataset.num);
+            updatePreviousDisplay();
         }
     })
 })
@@ -75,20 +78,24 @@ operations.forEach((element) =>{
 
     element.addEventListener('click', () => {
 
-        if (secondValue.length === 0 && isOperand === true){
-
+        if (isOperand && secondValue === ''){
             operandValue = element.dataset.op;
             updatePreviousDisplay();
-
-        } else if (isOperand === true){
-
-            return;
         }
 
-        isOperand = true;
-        operandValue = element.dataset.op;
-        updatePreviousDisplay();
+        else if(isOperand){
 
+            operate(firstValue.join(''), operandValue, secondValue.join(''));
+            firstValue = String(result).split();
+            secondValue = [];
+            operandValue = element.dataset.op;
+            updatePreviousDisplay();
+        }
+
+
+        operandValue = element.dataset.op;
+        isOperand = true;
+        updatePreviousDisplay();
     })
 })
 
@@ -142,7 +149,7 @@ resultBtn.addEventListener('click', () => {
 
     operate(firstValue.join(''), operandValue, secondValue.join(''));
     updatePreviousDisplay();
-    isOperand = false;
+
 
 })
 
