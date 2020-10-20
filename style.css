@@ -14,13 +14,13 @@ body{
 #calc{
     width: 350px;
     font-size: 1.5em;
-    background-color: #0E0E0E;
+    background-color: #6A4B7F;
     border-radius: 50px;
     box-shadow: 5px 5px 20px black;
 }
 
 #display{
-    background-color: rgb(56, 56, 56);
+    background-color: #7F5D95;
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
 }
@@ -45,8 +45,8 @@ key{
     margin: 0.3em 0;
 }
 
-.func{
-    background-color: #A5A5A5;
+.func, .op{
+    background-color: #B08FC5;
     color: #0E0E0E;
 }
 
@@ -54,11 +54,11 @@ key{
     background-color: #333333;
 }
 
-.op{
-    background-color: #FE9F0B;
-}
-
 .zero{
     width: 6em;
     border-radius: 50px;
+}
+
+.res{
+    background-color: #509391;
 }
