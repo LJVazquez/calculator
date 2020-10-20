@@ -20,6 +20,7 @@ body{
 }
 
 #display{
+    height: 8em;
     background-color: #7F5D95;
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
@@ -32,6 +33,8 @@ body{
 }
 
 #display-previous{
+    height: 3em;
+    overflow: hidden;
     font-size: 1em;
 }
 

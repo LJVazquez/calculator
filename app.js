@@ -1,90 +1,59 @@
-// basic functions
-function add(a, b){
-    return +a + +b;
-}
-
-function substract(a, b){
-    return +a - +b;
-}
-
-function multiply(a, b){
-    return +a * 1000 * +b * 1000 / 1000000; // POR LOS PROBLEMAS DE JS CON FLOATS
-}
-
-function divide(a, b){
-    return +a * 1000 / +b * 1000 / 1000000; // POR LOS PROBLEMAS DE JS CON FLOATS
-}
-
-operandsDictionary = [{'SUM': '+'}, {'SUS': '-'}, {'PROD': '*'}, {'DIV': '/'}];
-
-function operate(numA, operand, numB){
+function operate(a, operand, b){
     if(operand === '+'){
-        result = add(numA, numB).toString();
+        return (+a + +b).toString();
     }
     if(operand === '-'){
-        result = substract(numA, numB).toString();
+        return (+a - +b).toString();
     }
     if(operand === '*'){
-        result = multiply(numA, numB).toString();
+        return (+a * 1000 * +b * 1000 / 1000000).toString();
     }
     if(operand === '/'){
-        result = divide(numA, numB).toString();
+        return (+a * 1000 / +b * 1000 / 1000000).toString();
     }
 }
 
-const operations = document.querySelectorAll('[data-op]')
-
-
-const dotBtn = document.querySelector('[data-id = "dot"]');
-const signBtn = document.querySelector('[data-id = "sign"]');
-
-let isOperand = false;
-
-let firstValue = [];
-let secondValue = [];
-let operandValue = '';
-let result = '';
+const values = {
+    'first': [],
+    'second': [],
+    'operand': '',
+    'result': '',
+    'isOperand': false
+}
 
 // Actualiza el display con los ultimos valores
 function updateDisplay(){
-    const display1 = $('[data-display="previous"]');
-    const display2 = $('[data-display="current"]');
-    display1.text(`${firstValue.join('')} ${operandValue} ${secondValue.join('')}`);
-    display2.text(result);
+    const displayPrevious = $('[data-display="previous"]');
+    const displayCurrent = $('[data-display="current"]');
+    displayPrevious.text(`${values.first.join('')} ${values.operand} ${values.second.join('')}`);
+    displayCurrent.text(values.result);
 }
 
-
 // DEL
-// si isOperand y no hay segundo valor, borrar el operando
+// si values.isOperand y no hay segundo valor, borrar el operando
 // si no hay segundo valor, borrar con pop.() del primer valor
 // else borrar del segundo valor
 
 function deleteLast(){
     
-    if (isOperand && secondValue.length === 0){
+    if (values.isOperand && values.second.length === 0){
 
-        isOperand = false;
-        operandValue = '';
+        values.isOperand = false;
+        values.operand = '';
+    } 
     
-    } else if (secondValue.length === 0){
-
-        firstValue.pop();
-
-    } else {
-
-        secondValue.pop();
-    }
-
+    else if (values.second.length === 0) values.first.pop();
+    else values.second.pop();
     updateDisplay()
 }
 
 // establece vacio en todas las variables
 function allClear(){
-    firstValue = [];
-    secondValue = []; 
-    operandValue = ''; 
-    result = ''; 
-    isOperand = false; 
+    values.first = [];
+    values.second = []; 
+    values.operand = ''; 
+    values.result = ''; 
+    values.isOperand = false; 
     updateDisplay();
 }
 
@@ -99,20 +68,20 @@ function addDot(){
         }
     }
 
-    if (!isOperand){
-        if (isThereAdot(firstValue)) return;
-        firstValue.push('.');
+    if (!values.isOperand){
+        if (isThereAdot(values.first)) return;
+        values.first.push('.');
     }
     
     else {
-        if (isThereAdot(secondValue)) return;
-        secondValue.push('.');
+        if (isThereAdot(values.second)) return;
+        values.second.push('.');
     }
     updateDisplay();
 }
 
 // BOTON +/-
-// si isOperand entonces estamos en el primer valor, else estamos en el segundo
+// si values.isOperand entonces estamos en el primer valor, else estamos en el segundo
 // si isItNegative entonces el valor es negativo, entonces hay que shift el '-'
 // si !isItNegative entonces el valor es positivo, por lo que hay que unshift un '-'
 
@@ -122,39 +91,40 @@ function changeSign(){
         if (num[0] === '-') return true;
     }
 
-    if (!isOperand){
-        isItNegative(firstValue) ? firstValue.shift() : firstValue.unshift('-');
+    if (!values.isOperand){
+        isItNegative(values.first) ? values.first.shift() : values.first.unshift('-');
     }
 
     else {
-        isItNegative(secondValue) ? secondValue.shift() : secondValue.unshift('-');
+        isItNegative(values.second) ? values.second.shift() : values.second.unshift('-');
     }
 
     updateDisplay();
 }
 
 // BOTON RESULT
-// si result no esta vacio quiere decir que ya hicimos una operacion, y si se vuelve
-// a tocar el boton hay que cambiar el primer valor a su resultado y volver a
+// si values.result no esta vacio quiere decir que ya hicimos una operacion, y si se vuelve
+// a tocar el boton hay que cambiar el primer valor a su values.resultado y volver a
 // realizar la operacion en operate() con el mismo segundo valor;
 function getResult(){
 
-    if (result !== ''){
+    if(values.first === "") return;
+    if (values.result !== ''){
 
-        firstValue = String(result).split();
-        operate(firstValue, operandValue, secondValue.join(''));
+        values.first = String(values.result).split();
+        values.result = operate(values.first, values.operand, values.second.join(''));
         updateDisplay();
     }
-    operate(firstValue.join(''), operandValue, secondValue.join(''));
+    values.result = operate(values.first.join(''), values.operand, values.second.join(''));
     updateDisplay();
 }
 
 
 // BOTONES DE NUMEROS
-// si firstValue, secondValue y result no esta vacios quiere decir que se hizo 
+// si values.first, values.second y values.result no esta vacios quiere decir que se hizo 
 // una cuenta asi que allClear y empezar una cuenta nueva
-// si isOperand entonces push el numero a secondValue
-// sino push el nro a firstValue
+// si values.isOperand entonces push el numero a values.second
+// sino push el nro a values.first
 
 function addNumber(){
     
@@ -162,14 +132,14 @@ function addNumber(){
 
         $(element).click(() =>{
 
-            if(firstValue.length !== 0 && secondValue.length !== 0 && result !== ''){
+            if(values.first.length !== 0 && values.second.length !== 0 && values.result !== ''){
                 allClear();
-                firstValue.push(element.dataset.num);
+                values.first.push(element.dataset.num);
             }
 
-            else if (isOperand) secondValue.push(element.dataset.num);
+            else if (values.isOperand) values.second.push(element.dataset.num);
 
-            else firstValue.push(element.dataset.num);
+            else values.first.push(element.dataset.num);
             
             updateDisplay();
         })
@@ -177,10 +147,10 @@ function addNumber(){
 }
 
 
-// si isOperand y segundo valor no esta vacio quiere decir que se terminó de hacer
+// si values.isOperand y segundo valor no esta vacio quiere decir que se terminó de hacer
 // una cuenta, asi que al clickear un operand establecer todo para hacer otra
-// cuenta con el resultado como nuevo primer parametro
-// si no establecer el operand y asignar isOperand para saber que pasamos al
+// cuenta con el values.resultado como nuevo primer parametro
+// si no establecer el operand y asignar values.isOperand para saber que pasamos al
 // segundo valor al presionar algun numero
 
 function addOperator(){
@@ -189,16 +159,16 @@ function addOperator(){
 
         $(element).click(() =>{
 
-            if(isOperand && secondValue.length !== 0){
-                operate(firstValue.join(''), operandValue, secondValue.join(''));
-                firstValue = String(result).split();
-                secondValue = [];
+            if(values.isOperand && values.second.length !== 0){
+                values.result = operate(values.first.join(''), values.operand, values.second.join(''));
+                values.first = String(values.result).split();
+                values.second = [];
             }
 
-            operandValue = element.dataset.op;
-            isOperand = true;
+            values.operand = element.dataset.op;
+            values.isOperand = true;
             updateDisplay();
-            result = '';
+            values.result = '';
         })
     })
 }
@@ -214,3 +184,14 @@ function startApp(){
 }
 
 startApp();
+
+$('html').keyup(function (e) { 
+    console.log(e.key)
+});
+
+$('[data-num]').each(function(index, element){
+    $(element).click(()=>{
+        console.log(element.dataset.num)
+    })
+})
+
