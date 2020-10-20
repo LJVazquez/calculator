@@ -57,24 +57,34 @@ function allClear(){
     updateDisplay();
 }
 
+// checkea si ya hay un punto en el primer o segundo array dependiendo de si
+// values.isOperand
+function isThereAdot(){
+    
+    if (!values.isOperand){
+        for (let i = 0; i < values.first.length; i++){
+            if (values.first[i] === '.') return true;
+        }
+    }
+    else {
+        for (let i = 0; i < values.second.length; i++){
+            if (values.second[i] === '.') return true;
+        }
+    }
+}
+
 // BOTON .
 // isThereAdot checkea si el parametro tiene un punto en algun lugar
 // si isThereAdot = true, vuelve antes de poder pushear un nuevo punto.
 
 function addDot(){
-    function isThereAdot(num){
-        for (let i = 0; i < num.length; i++){
-            if (num[i] === '.') return true;
-        }
-    }
-
     if (!values.isOperand){
-        if (isThereAdot(values.first)) return;
+        if (isThereAdot()) return;
         values.first.push('.');
     }
     
     else {
-        if (isThereAdot(values.second)) return;
+        if (isThereAdot()) return;
         values.second.push('.');
     }
     updateDisplay();
@@ -126,26 +136,18 @@ function getResult(){
 // si values.isOperand entonces push el numero a values.second
 // sino push el nro a values.first
 
-function addNumber(){
-    
-    $('[data-num]').each((index, element) =>{
-
-        $(element).click(() =>{
+function addNumber(num){
 
             if(values.first.length !== 0 && values.second.length !== 0 && values.result !== ''){
                 allClear();
-                values.first.push(element.dataset.num);
+                values.first.push(num);
             }
 
-            else if (values.isOperand) values.second.push(element.dataset.num);
-
-            else values.first.push(element.dataset.num);
-            
+            else if (values.isOperand) values.second.push(num);
+            else values.first.push(num);
             updateDisplay();
-        })
-    })
-}
 
+}
 
 // si values.isOperand y segundo valor no esta vacio quiere decir que se terminó de hacer
 // una cuenta, asi que al clickear un operand establecer todo para hacer otra
@@ -153,11 +155,7 @@ function addNumber(){
 // si no establecer el operand y asignar values.isOperand para saber que pasamos al
 // segundo valor al presionar algun numero
 
-function addOperator(){
-
-    $('[data-op]').each( (index, element) =>{
-
-        $(element).click(() =>{
+function addOperator(key){
 
             if(values.isOperand && values.second.length !== 0){
                 values.result = operate(values.first.join(''), values.operand, values.second.join(''));
@@ -165,33 +163,58 @@ function addOperator(){
                 values.second = [];
             }
 
-            values.operand = element.dataset.op;
+            values.operand = key;
             values.isOperand = true;
             updateDisplay();
             values.result = '';
-        })
-    })
+
 }
 
-function startApp(){
+// asigna las funciones a las teclas
+function keyboardInputs(){
+    $('html').keyup(function (e) {
+        //--------------numeros-------------//
+        const regexpDigits = /(\d|[.])/
+
+        if (e.key === '.') {
+            if (isThereAdot()) return;
+        }
+        if (regexpDigits.test(e.key)) addNumber(e.key)
+
+        //--------------operandos-------------//
+        const regexpOperands = /([+]|[-]|[*]|[/])/;
+        if (regexpOperands.test(e.key)) addOperator(e.key);
+
+        //-------------resto de comandos------//
+        if (e.key === 'Enter') getResult();
+        if (e.key === 'Backspace') deleteLast();
+        if (e.key === 'Escape') allClear();
+    });
+}
+
+
+// asigna las funciones a los botones
+function clickInputs(){
+    // numeros click
+    $('[data-num]').each(function(index, element){
+        $(element).click(()=>{
+            addNumber(element.dataset.num);
+        })
+    })
+
+    // teclado click
+    $('[data-op]').each(function(index, element){
+        $(element).click(()=>{
+            addOperator(element.dataset.op);
+        })
+    })
+
     $('[data-id="del"]').click(deleteLast);
     $('[data-id="ac"]').click(allClear);
     $('[data-id="sign"]').click(changeSign);
     $('[data-id="dot"]').click(addDot);
     $('[data-id="result"]').click(getResult);
-    addNumber();
-    addOperator();
 }
 
-startApp();
-
-$('html').keyup(function (e) { 
-    console.log(e.key)
-});
-
-$('[data-num]').each(function(index, element){
-    $(element).click(()=>{
-        console.log(element.dataset.num)
-    })
-})
-
+clickInputs();
+keyboardInputs();
