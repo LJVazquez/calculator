@@ -1,4 +1,9 @@
 function operate(a, operand, b){
+    if (operand === '/' && b === '0'){
+        $('#calc').slideToggle(2000)
+        return '🔥🔥🔥' ;
+    }
+
     if(operand === '+'){
         return (+a + +b).toString();
     }
@@ -167,8 +172,12 @@ function addOperator(key){
             values.isOperand = true;
             updateDisplay();
             values.result = '';
-
 }
+
+function isFire(){
+    return document.getElementById('display-current').innerText === '🔥' ? true : false;
+}
+
 
 // asigna las funciones a las teclas
 function keyboardInputs(){
